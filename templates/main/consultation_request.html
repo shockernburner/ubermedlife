@@ -1,0 +1,234 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}{% trans "Request Consultation" %} - UberMed.Life{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="text-center mb-5">
+                <h1 class="display-5 fw-bold text-primary">
+                    {% trans "Request Medical Consultation" %}
+                </h1>
+                <p class="lead text-muted">
+                    {% trans "Connect with top Chinese medical specialists for expert medical advice" %}
+                </p>
+            </div>
+
+            <div class="card border-0 shadow-lg">
+                <div class="card-header bg-gradient-primary text-white text-center py-4">
+                    <h4 class="fw-bold mb-0">
+                        <i class="fas fa-video me-2"></i>{% trans "Consultation Request Form" %}
+                    </h4>
+                </div>
+                
+                <div class="card-body p-5">
+                    <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+                        {% csrf_token %}
+                        
+                        {% if doctor %}
+                        <div class="alert alert-info d-flex align-items-center mb-4">
+                            {% if doctor.photo %}
+                                <img src="{{ doctor.photo.url }}" alt="Dr. {{ doctor.name }}" 
+                                     class="rounded-circle me-3" style="width: 60px; height: 60px; object-fit: cover;">
+                            {% else %}
+                                <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 60px; height: 60px;">
+                                    <i class="fas fa-user-md"></i>
+                                </div>
+                            {% endif %}
+                            <div>
+                                <h6 class="mb-1">{% trans "Consultation with" %} Dr. {{ doctor.name }}</h6>
+                                <small>{{ doctor.get_specialization_display }} • {{ doctor.hospital }}</small>
+                            </div>
+                        </div>
+                        {% endif %}
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.patient_name.id_for_label }}" class="form-label fw-bold">
+                                    {{ form.patient_name.label }} <span class="text-danger">*</span>
+                                </label>
+                                {{ form.patient_name }}
+                                {% if form.patient_name.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ form.patient_name.errors.0 }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.patient_age.id_for_label }}" class="form-label fw-bold">
+                                    {{ form.patient_age.label }} <span class="text-danger">*</span>
+                                </label>
+                                {{ form.patient_age }}
+                                {% if form.patient_age.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ form.patient_age.errors.0 }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.contact_phone.id_for_label }}" class="form-label fw-bold">
+                                    {{ form.contact_phone.label }} <span class="text-danger">*</span>
+                                </label>
+                                {{ form.contact_phone }}
+                                {% if form.contact_phone.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ form.contact_phone.errors.0 }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.contact_email.id_for_label }}" class="form-label fw-bold">
+                                    {{ form.contact_email.label }} <span class="text-danger">*</span>
+                                </label>
+                                {{ form.contact_email }}
+                                {% if form.contact_email.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ form.contact_email.errors.0 }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="{{ form.medical_condition.id_for_label }}" class="form-label fw-bold">
+                                {{ form.medical_condition.label }} <span class="text-danger">*</span>
+                            </label>
+                            {{ form.medical_condition }}
+                            {% if form.medical_condition.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.medical_condition.errors.0 }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="{{ form.current_symptoms.id_for_label }}" class="form-label fw-bold">
+                                {{ form.current_symptoms.label }}
+                            </label>
+                            {{ form.current_symptoms }}
+                            {% if form.current_symptoms.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.current_symptoms.errors.0 }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="{{ form.medical_history.id_for_label }}" class="form-label fw-bold">
+                                {{ form.medical_history.label }}
+                            </label>
+                            {{ form.medical_history }}
+                            {% if form.medical_history.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.medical_history.errors.0 }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="{{ form.current_medications.id_for_label }}" class="form-label fw-bold">
+                                {{ form.current_medications.label }}
+                            </label>
+                            {{ form.current_medications }}
+                            {% if form.current_medications.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.current_medications.errors.0 }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        {% if not doctor %}
+                        <div class="mb-3">
+                            <label for="{{ form.preferred_specialization.id_for_label }}" class="form-label fw-bold">
+                                {{ form.preferred_specialization.label }}
+                            </label>
+                            {{ form.preferred_specialization }}
+                            {% if form.preferred_specialization.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.preferred_specialization.errors.0 }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        {% endif %}
+
+                        <div class="mb-4">
+                            <label for="{{ form.medical_documents.id_for_label }}" class="form-label fw-bold">
+                                {{ form.medical_documents.label }}
+                            </label>
+                            {{ form.medical_documents }}
+                            {% if form.medical_documents.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.medical_documents.errors.0 }}
+                                </div>
+                            {% endif %}
+                            <div class="form-text">
+                                {% trans "Upload medical reports, test results, or any relevant documents (PDF, JPG, PNG)" %}
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-paper-plane me-2"></i>{% trans "Submit Consultation Request" %}
+                            </button>
+                            <a href="{% if doctor %}{% url 'main:doctor_detail' doctor.id %}{% else %}{% url 'main:doctors' %}{% endif %}" class="btn btn-outline-secondary">
+                                {% trans "Cancel" %}
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Information Section -->
+            <div class="row g-4 mt-4">
+                <div class="col-md-4">
+                    <div class="text-center">
+                        <i class="fas fa-clock fa-2x text-primary mb-3"></i>
+                        <h6 class="fw-bold">{% trans "Quick Response" %}</h6>
+                        <small class="text-muted">{% trans "We'll respond within 24 hours" %}</small>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="text-center">
+                        <i class="fas fa-shield-alt fa-2x text-orange mb-3"></i>
+                        <h6 class="fw-bold">{% trans "Secure & Private" %}</h6>
+                        <small class="text-muted">{% trans "Your medical information is protected" %}</small>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="text-center">
+                        <i class="fas fa-user-md fa-2x text-primary mb-3"></i>
+                        <h6 class="fw-bold">{% trans "Expert Care" %}</h6>
+                        <small class="text-muted">{% trans "Top Chinese medical specialists" %}</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_head %}
+<style>
+.form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.25);
+}
+
+.card {
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.card-header {
+    border-bottom: none;
+}
+</style>
+{% endblock %}

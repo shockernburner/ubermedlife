@@ -1,0 +1,189 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}{{ article.title }} - UberMed.Life{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <!-- Article Header -->
+            <article class="mb-5">
+                <header class="mb-4">
+                    <div class="mb-3">
+                        <span class="badge badge-orange">{{ article.get_category_display }}</span>
+                        <span class="text-muted ms-3">
+                            <i class="fas fa-calendar me-1"></i>{{ article.published_date|date:"F d, Y" }}
+                        </span>
+                        <span class="text-muted ms-3">
+                            <i class="fas fa-clock me-1"></i>{{ article.created_at|timesince }} {% trans "ago" %}
+                        </span>
+                    </div>
+                    
+                    <h1 class="display-5 fw-bold text-primary mb-4">
+                        {% get_current_language as LANGUAGE_CODE %}
+                        {% if LANGUAGE_CODE == 'bn' and article.title_bangla %}
+                            {{ article.title_bangla }}
+                        {% else %}
+                            {{ article.title }}
+                        {% endif %}
+                    </h1>
+                    
+                    {% if article.excerpt %}
+                    <p class="lead text-muted">
+                        {% if LANGUAGE_CODE == 'bn' and article.excerpt_bangla %}
+                            {{ article.excerpt_bangla }}
+                        {% else %}
+                            {{ article.excerpt }}
+                        {% endif %}
+                    </p>
+                    {% endif %}
+                </header>
+
+                <!-- Featured Image -->
+                {% if article.featured_image %}
+                    <div class="text-center mb-5">
+                        <img src="{{ article.featured_image.url }}" alt="{{ article.title }}" class="img-fluid rounded shadow">
+                    </div>
+                {% else %}
+                    <div class="text-center mb-5">
+                        <div class="img-placeholder rounded shadow" style="height: 300px;">
+                            <i class="fas fa-newspaper fa-4x"></i>
+                        </div>
+                    </div>
+                {% endif %}
+
+                <!-- Article Content -->
+                <div class="article-content">
+                    {% get_current_language as LANGUAGE_CODE %}
+                    {% if LANGUAGE_CODE == 'bn' and article.content_bangla %}
+                        {{ article.content_bangla|linebreaks }}
+                    {% else %}
+                        {{ article.content|linebreaks }}
+                    {% endif %}
+                </div>
+
+                <!-- Article Tags -->
+                {% if article.tags %}
+                <div class="mt-4">
+                    <h6 class="fw-bold">{% trans "Tags:" %}</h6>
+                    {% for tag in article.tags.all %}
+                        <span class="badge bg-light text-dark me-2">{{ tag.name }}</span>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </article>
+
+            <!-- Social Share -->
+            <div class="d-flex align-items-center justify-content-between border-top pt-4 mb-5">
+                <h6 class="mb-0">{% trans "Share this article:" %}</h6>
+                <div class="social-share">
+                    <a href="#" class="btn btn-outline-primary btn-sm me-2">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="btn btn-outline-primary btn-sm me-2">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="btn btn-outline-primary btn-sm me-2">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                    <a href="#" class="btn btn-outline-primary btn-sm">
+                        <i class="fas fa-copy"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Navigation -->
+            <div class="d-flex justify-content-between">
+                <a href="{% url 'main:news' %}" class="btn btn-orange">
+                    <i class="fas fa-arrow-left me-2"></i>{% trans "Back to News" %}
+                </a>
+                
+                {% if user.is_authenticated %}
+                <a href="{% url 'main:consultation_request' %}" class="btn btn-primary">
+                    {% trans "Book Consultation" %} <i class="fas fa-arrow-right ms-2"></i>
+                </a>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="col-lg-4">
+            <div class="sticky-top" style="top: 100px;">
+                <!-- Related Articles -->
+                {% if related_articles %}
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-header bg-gradient-primary text-white">
+                        <h6 class="mb-0 fw-bold">{% trans "Related Articles" %}</h6>
+                    </div>
+                    <div class="card-body">
+                        {% for related in related_articles %}
+                        <div class="d-flex mb-3">
+                            {% if related.featured_image %}
+                                <img src="{{ related.featured_image.url }}" alt="{{ related.title }}" class="rounded me-3" style="width: 60px; height: 60px; object-fit: cover;">
+                            {% else %}
+                                <div class="bg-orange text-white rounded d-flex align-items-center justify-content-center me-3" style="width: 60px; height: 60px; min-width: 60px;">
+                                    <i class="fas fa-newspaper"></i>
+                                </div>
+                            {% endif %}
+                            <div>
+                                <h6 class="mb-1">
+                                    <a href="{% url 'main:news_detail' related.slug %}" class="text-decoration-none">
+                                        {{ related.title|truncatechars:50 }}
+                                    </a>
+                                </h6>
+                                <small class="text-muted">{{ related.published_date|date:"M d, Y" }}</small>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- Call to Action -->
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body text-center">
+                        <i class="fas fa-stethoscope fa-3x text-primary mb-3"></i>
+                        <h6 class="fw-bold mb-3">{% trans "Need Medical Consultation?" %}</h6>
+                        <p class="text-muted small mb-3">
+                            {% trans "Connect with Chinese medical specialists for expert advice and treatment options." %}
+                        </p>
+                        <a href="{% url 'main:consultation_request' %}" class="btn btn-primary btn-sm">
+                            {% trans "Book Now" %}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_head %}
+<style>
+.article-content {
+    font-size: 1.1rem;
+    line-height: 1.8;
+}
+
+.article-content p {
+    margin-bottom: 1.5rem;
+}
+
+.social-share .btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@media (max-width: 991px) {
+    .sticky-top {
+        position: static !important;
+    }
+}
+</style>
+{% endblock %}

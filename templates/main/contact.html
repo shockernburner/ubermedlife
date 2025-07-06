@@ -1,0 +1,246 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}{% trans "Contact Us" %} - UberMed.Life{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <!-- Contact Form -->
+        <div class="col-lg-8 mb-5">
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-5">
+                    <h2 class="fw-bold mb-4">{% trans "Get In Touch" %}</h2>
+                    <p class="text-muted mb-4">
+                        {% trans "Have questions about our services? Need help planning your medical journey? We're here to help you every step of the way." %}
+                    </p>
+                    
+                    <form method="post" class="needs-validation" novalidate>
+                        {% csrf_token %}
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.name.id_for_label }}" class="form-label">
+                                    {{ form.name.label }} <span class="text-danger">*</span>
+                                </label>
+                                {{ form.name }}
+                                {% if form.name.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ form.name.errors.0 }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.phone.id_for_label }}" class="form-label">
+                                    {{ form.phone.label }}
+                                </label>
+                                {{ form.phone }}
+                                {% if form.phone.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ form.phone.errors.0 }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.email.id_for_label }}" class="form-label">
+                                {{ form.email.label }} <span class="text-danger">*</span>
+                            </label>
+                            {{ form.email }}
+                            {% if form.email.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.email.errors.0 }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.subject.id_for_label }}" class="form-label">
+                                {{ form.subject.label }} <span class="text-danger">*</span>
+                            </label>
+                            {{ form.subject }}
+                            {% if form.subject.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.subject.errors.0 }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="{{ form.message.id_for_label }}" class="form-label">
+                                {{ form.message.label }} <span class="text-danger">*</span>
+                            </label>
+                            {{ form.message }}
+                            {% if form.message.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.message.errors.0 }}
+                                </div>
+                            {% endif %}
+                        </div>
+                          <button type="submit" class="btn btn-orange btn-lg">
+                            <i class="fas fa-paper-plane me-2"></i>{% trans "Send Message" %}
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Contact Information -->
+        <div class="col-lg-4">
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-body p-4">
+                    <h5 class="fw-bold mb-4">{% trans "Contact Information" %}</h5>
+                    
+                    <div class="contact-info">
+                        <div class="contact-item d-flex mb-3">
+                            <div class="contact-icon me-3">
+                                <i class="fas fa-map-marker-alt text-primary"></i>
+                            </div>
+                            <div>
+                                <h6 class="mb-1">{% trans "Address" %}</h6>
+                                <p class="text-muted mb-0">
+                                    {% trans "Dhaka, Bangladesh" %}
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-item d-flex mb-3">
+                            <div class="contact-icon me-3">
+                                <i class="fas fa-envelope text-primary"></i>
+                            </div>
+                            <div>
+                                <h6 class="mb-1">{% trans "Email" %}</h6>
+                                <p class="text-muted mb-0">
+                                    <a href="mailto:cfo@futureonward.com" class="text-decoration-none">
+                                        cfo@futureonward.com
+                                    </a>
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-item d-flex mb-3">
+                            <div class="contact-icon me-3">
+                                <i class="fas fa-globe text-primary"></i>
+                            </div>
+                            <div>
+                                <h6 class="mb-1">{% trans "Website" %}</h6>
+                                <p class="text-muted mb-0">
+                                    <a href="https://ubermed.life" class="text-decoration-none">
+                                        ubermed.life
+                                    </a>
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-item d-flex">
+                            <div class="contact-icon me-3">
+                                <i class="fas fa-clock text-primary"></i>
+                            </div>
+                            <div>
+                                <h6 class="mb-1">{% trans "Support Hours" %}</h6>
+                                <p class="text-muted mb-0">
+                                    {% trans "24/7 Available" %}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+              <!-- Emergency Contact -->
+            <div class="card shadow-sm border-0 bg-orange text-white">
+                <div class="card-body p-4 text-center">
+                    <i class="fas fa-phone-alt fa-2x mb-3"></i>
+                    <h5 class="fw-bold mb-3">{% trans "Emergency Support" %}</h5>
+                    <p class="mb-3">
+                        {% trans "Need immediate assistance? Our emergency support team is available 24/7." %}
+                    </p>
+                    <a href="tel:+8801234567890" class="btn btn-light">
+                        <i class="fas fa-phone me-2"></i>{% trans "Call Now" %}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- FAQ Section -->
+    <section class="mt-5">
+        <h3 class="fw-bold text-center mb-5">{% trans "Frequently Asked Questions" %}</h3>
+        
+        <div class="row">
+            <div class="col-lg-6 mb-4">
+                <div class="faq-item">
+                    <h5 class="fw-bold mb-2">{% trans "How do I book a consultation?" %}</h5>
+                    <p class="text-muted">
+                        {% trans "You can book a consultation by registering on our platform and selecting your preferred doctor. Our team will coordinate the appointment within 24 hours." %}
+                    </p>
+                </div>
+            </div>
+            
+            <div class="col-lg-6 mb-4">
+                <div class="faq-item">
+                    <h5 class="fw-bold mb-2">{% trans "What languages are supported?" %}</h5>
+                    <p class="text-muted">
+                        {% trans "We provide full support in both Bangla and English, with professional medical translation services for consultations with Chinese doctors." %}
+                    </p>
+                </div>
+            </div>
+            
+            <div class="col-lg-6 mb-4">
+                <div class="faq-item">
+                    <h5 class="fw-bold mb-2">{% trans "How much does a consultation cost?" %}</h5>
+                    <p class="text-muted">
+                        {% trans "Consultation fees vary by specialist, typically ranging from $100-250 USD. Exact pricing is displayed when selecting a doctor." %}
+                    </p>
+                </div>
+            </div>
+            
+            <div class="col-lg-6 mb-4">
+                <div class="faq-item">
+                    <h5 class="fw-bold mb-2">{% trans "Do you help with travel arrangements?" %}</h5>
+                    <p class="text-muted">
+                        {% trans "Yes, we provide comprehensive travel assistance including visa support, hospital coordination, accommodation, and local transportation in China." %}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}
+
+{% block extra_head %}
+<style>
+.contact-icon {
+    width: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.contact-item {
+    padding: 1rem 0;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.contact-item:last-child {
+    border-bottom: none;
+}
+
+.faq-item {
+    padding: 1.5rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border-left: 4px solid var(--primary-color);
+}
+
+.card {
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+}
+</style>
+{% endblock %}

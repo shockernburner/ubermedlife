@@ -1,0 +1,205 @@
+{% load static %}
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="{% get_current_language as LANGUAGE_CODE %}{{ LANGUAGE_CODE }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}UberMed.Life - {% trans "Quality Healthcare from China for Bangladesh" %}{% endblock %}</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-primary" href="{% url 'main:home' %}">
+                <i class="fas fa-heartbeat me-2"></i>UberMed.Life
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'main:home' %}">{% trans "Home" %}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'main:services' %}">{% trans "Services" %}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'main:doctors' %}">{% trans "Doctors" %}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'main:testimonials' %}">{% trans "Testimonials" %}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'main:news' %}">{% trans "News" %}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'main:about' %}">{% trans "About" %}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'main:contact' %}">{% trans "Contact" %}</a>
+                    </li>
+                </ul>
+                
+                <!-- Language Switcher -->
+                <div class="nav-item dropdown me-3">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                        <i class="fas fa-globe me-1"></i>
+                        {% get_current_language as LANGUAGE_CODE %}
+                        {% if LANGUAGE_CODE == 'bn' %}বাংলা{% else %}English{% endif %}
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="/en{{ request.get_full_path }}">English</a></li>
+                        <li><a class="dropdown-item" href="/bn{{ request.get_full_path }}">বাংলা</a></li>
+                    </ul>
+                </div>
+                
+                <!-- User Authentication -->
+                <ul class="navbar-nav">
+                    {% if user.is_authenticated %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-user me-1"></i>{{ user.first_name|default:user.username }}
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="{% url 'main:dashboard' %}">
+                                    <i class="fas fa-tachometer-alt me-2"></i>{% trans "Dashboard" %}
+                                </a></li>
+                                <li><a class="dropdown-item" href="{% url 'accounts:profile' %}">
+                                    <i class="fas fa-user-edit me-2"></i>{% trans "Profile" %}
+                                </a></li>
+                                <li><a class="dropdown-item" href="{% url 'main:my_consultations' %}">
+                                    <i class="fas fa-stethoscope me-2"></i>{% trans "My Consultations" %}
+                                </a></li>
+                                <li><a class="dropdown-item" href="{% url 'main:my_travel_plans' %}">
+                                    <i class="fas fa-plane me-2"></i>{% trans "My Travel Plans" %}
+                                </a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="{% url 'accounts:logout' %}">
+                                    <i class="fas fa-sign-out-alt me-2"></i>{% trans "Logout" %}
+                                </a></li>
+                            </ul>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'accounts:login' %}">{% trans "Login" %}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="btn btn-primary ms-2" href="{% url 'accounts:register' %}">{% trans "Register" %}</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main style="margin-top: 76px;">
+        <!-- Messages -->
+        {% if messages %}
+            <div class="container mt-3">
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% block content %}{% endblock %}
+    </main>    <!-- Footer -->
+    <footer class="bg-gradient-primary text-light py-5 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <h5 class="fw-bold mb-3">
+                        <i class="fas fa-heartbeat me-2"></i>UberMed.Life
+                    </h5>
+                    <p class="text-muted">
+                        {% trans "Connecting Bangladeshi patients with top Chinese medical specialists for world-class healthcare and treatment." %}
+                    </p>
+                    <div class="social-links">
+                        <a href="#" class="text-light me-3"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-light me-3"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-light me-3"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="text-light"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h6 class="fw-bold mb-3">{% trans "Quick Links" %}</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="{% url 'main:services' %}" class="text-muted text-decoration-none">{% trans "Services" %}</a></li>
+                        <li><a href="{% url 'main:doctors' %}" class="text-muted text-decoration-none">{% trans "Doctors" %}</a></li>
+                        <li><a href="{% url 'main:testimonials' %}" class="text-muted text-decoration-none">{% trans "Testimonials" %}</a></li>
+                        <li><a href="{% url 'main:about' %}" class="text-muted text-decoration-none">{% trans "About Us" %}</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <h6 class="fw-bold mb-3">{% trans "Services" %}</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-muted text-decoration-none">{% trans "Teleconsultation" %}</a></li>
+                        <li><a href="#" class="text-muted text-decoration-none">{% trans "Second Opinion" %}</a></li>
+                        <li><a href="#" class="text-muted text-decoration-none">{% trans "Medical Travel" %}</a></li>
+                        <li><a href="#" class="text-muted text-decoration-none">{% trans "Treatment in China" %}</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <h6 class="fw-bold mb-3">{% trans "Contact Info" %}</h6>
+                    <div class="contact-info">
+                        <p class="text-muted mb-2">
+                            <i class="fas fa-map-marker-alt me-2"></i>
+                            {% trans "Dhaka, Bangladesh" %}
+                        </p>
+                        <p class="text-muted mb-2">
+                            <i class="fas fa-envelope me-2"></i>
+                            <a href="mailto:cfo@futureonward.com" class="text-muted text-decoration-none">cfo@futureonward.com</a>
+                        </p>
+                        <p class="text-muted mb-2">
+                            <i class="fas fa-globe me-2"></i>
+                            <a href="https://ubermed.life" class="text-muted text-decoration-none">ubermed.life</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <hr class="my-4">
+            
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <p class="text-muted mb-0">
+                        &copy; 2025 UberMed.Life. {% trans "All rights reserved." %}
+                    </p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <small class="text-muted">
+                        {% trans "Quality Healthcare • Medical Tourism • Chinese Specialists" %}
+                    </small>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="{% static 'js/main.js' %}"></script>
+    
+    {% block extra_scripts %}{% endblock %}
+</body>
+</html>

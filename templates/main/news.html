@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}{% trans "Medical News" %} - UberMed.Life{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Header -->
+    <section class="text-center mb-5">
+        <h1 class="display-4 fw-bold text-primary mb-4">
+            {% trans "Latest Medical News" %}
+        </h1>
+        <p class="lead text-muted mx-auto" style="max-width: 800px;">
+            {% trans "Stay updated with the latest developments in Chinese healthcare and medical innovations" %}
+        </p>
+    </section>
+
+    <!-- News Grid -->
+    <div class="row g-4">
+        {% for article in articles %}
+        <div class="col-lg-4 col-md-6">
+            <div class="card h-100 border-0 shadow-sm {% cycle 'card-blue' 'card-orange' %}">
+                <div class="card-header bg-transparent border-0 pb-0">
+                    {% if article.featured_image %}
+                        <img src="{{ article.featured_image.url }}" alt="{{ article.title }}" class="card-img-top rounded" style="height: 200px; object-fit: cover;">
+                    {% else %}
+                        <div class="img-placeholder rounded" style="height: 200px;">
+                            <i class="fas fa-newspaper fa-3x"></i>
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <div class="card-body">
+                    <div class="mb-2">
+                        <span class="badge badge-orange">{{ article.get_category_display }}</span>
+                        <small class="text-muted ms-2">{{ article.published_date|date:"M d, Y" }}</small>
+                    </div>
+                    
+                    <h5 class="card-title fw-bold">
+                        {% get_current_language as LANGUAGE_CODE %}
+                        {% if LANGUAGE_CODE == 'bn' and article.title_bangla %}
+                            {{ article.title_bangla|truncatechars:80 }}
+                        {% else %}
+                            {{ article.title|truncatechars:80 }}
+                        {% endif %}
+                    </h5>
+                    
+                    <p class="card-text text-muted">
+                        {% if LANGUAGE_CODE == 'bn' and article.excerpt_bangla %}
+                            {{ article.excerpt_bangla|truncatewords:20 }}
+                        {% else %}
+                            {{ article.excerpt|truncatewords:20 }}
+                        {% endif %}
+                    </p>
+                </div>
+                
+                <div class="card-footer bg-transparent border-0">
+                    <a href="{% url 'main:news_detail' article.slug %}" class="btn btn-outline-primary btn-sm">
+                        {% trans "Read More" %} <i class="fas fa-arrow-right ms-1"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="text-center py-5">
+                <div class="mb-4">
+                    <i class="fas fa-newspaper fa-4x text-muted"></i>
+                </div>
+                <h4 class="text-muted">{% trans "No news articles available" %}</h4>
+                <p class="text-muted">{% trans "Check back soon for the latest medical news and updates." %}</p>
+                <a href="{% url 'main:home' %}" class="btn btn-primary">
+                    {% trans "Back to Home" %}
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Newsletter Signup -->
+    <section class="text-center mt-5 py-5 bg-light rounded-lg">
+        <h3 class="fw-bold mb-3">{% trans "Stay Updated" %}</h3>
+        <p class="text-muted mb-4">
+            {% trans "Subscribe to our newsletter to receive the latest medical news and health tips directly in your inbox." %}
+        </p>
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="input-group">
+                    <input type="email" class="form-control" placeholder="{% trans 'Enter your email address' %}">
+                    <button class="btn btn-orange" type="button">
+                        <i class="fas fa-paper-plane me-1"></i>{% trans "Subscribe" %}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}
+
+{% block extra_head %}
+<style>
+.card-header {
+    padding: 1rem 1rem 0 1rem;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+    transition: all 0.3s ease;
+}
+
+.card-blue:hover {
+    box-shadow: 0 0.5rem 1rem rgba(37, 99, 235, 0.15);
+}
+
+.card-orange:hover {
+    box-shadow: 0 0.5rem 1rem rgba(249, 115, 22, 0.15);
+}
+
+.input-group {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border-radius: 6px;
+    overflow: hidden;
+}
+</style>
+{% endblock %}

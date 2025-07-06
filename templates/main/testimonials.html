@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}{% trans "Testimonials" %} - UberMed.Life{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Header -->
+    <section class="text-center mb-5">
+        <h1 class="display-4 fw-bold text-primary mb-4">
+            {% trans "Patient Success Stories" %}
+        </h1>
+        <p class="lead text-muted mx-auto" style="max-width: 800px;">
+            {% trans "Read inspiring stories from patients who have successfully received treatment through UberMed.Life" %}
+        </p>
+    </section>
+
+    <!-- Testimonials Grid -->
+    <div class="row g-4">
+        {% for testimonial in testimonials %}
+        <div class="col-lg-6 col-md-6">
+            <div class="testimonial-card bg-white p-4 rounded-lg shadow-sm border h-100">
+                <div class="rating mb-3">
+                    {% for i in "12345" %}
+                        {% if forloop.counter <= testimonial.rating %}
+                            <i class="fas fa-star text-warning"></i>
+                        {% else %}
+                            <i class="far fa-star text-muted"></i>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                
+                <blockquote class="mb-4">
+                    {% get_current_language as LANGUAGE_CODE %}
+                    {% if LANGUAGE_CODE == 'bn' and testimonial.testimonial_bangla %}
+                        "{{ testimonial.testimonial_bangla }}"
+                    {% else %}
+                        "{{ testimonial.testimonial }}"
+                    {% endif %}
+                </blockquote>
+                
+                <div class="testimonial-author d-flex align-items-center">
+                    {% if testimonial.photo %}
+                        <img src="{{ testimonial.photo.url }}" alt="{{ testimonial.patient_name }}" class="rounded-circle me-3" style="width: 60px; height: 60px; object-fit: cover;">
+                    {% else %}
+                        <div class="bg-orange text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 60px; height: 60px;">
+                            <i class="fas fa-user fa-lg"></i>
+                        </div>
+                    {% endif %}
+                    <div>
+                        <h6 class="mb-1 fw-bold">
+                            {% if LANGUAGE_CODE == 'bn' and testimonial.patient_name_bangla %}
+                                {{ testimonial.patient_name_bangla }}
+                            {% else %}
+                                {{ testimonial.patient_name }}
+                            {% endif %}
+                        </h6>
+                        <small class="text-muted">{{ testimonial.treatment }}</small>
+                        <br>
+                        <small class="text-primary">{{ testimonial.created_at|date:"F Y" }}</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="text-center py-5">
+                <div class="mb-4">
+                    <i class="fas fa-comments fa-4x text-muted"></i>
+                </div>
+                <h4 class="text-muted">{% trans "No testimonials available yet" %}</h4>
+                <p class="text-muted">{% trans "Be the first to share your success story!" %}</p>
+                <a href="{% url 'main:contact' %}" class="btn btn-primary">
+                    {% trans "Share Your Story" %}
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Call to Action -->
+    <section class="text-center mt-5 py-5 bg-gradient-primary text-white rounded-lg">
+        <h3 class="fw-bold mb-3">{% trans "Ready to Start Your Healthcare Journey?" %}</h3>
+        <p class="mb-4">
+            {% trans "Join hundreds of satisfied patients who have accessed world-class Chinese medical care through UberMed.Life." %}
+        </p>
+        <div class="d-flex flex-wrap gap-3 justify-content-center">
+            <a href="{% url 'main:consultation_request' %}" class="btn btn-light btn-lg">
+                <i class="fas fa-video me-2"></i>{% trans "Book Consultation" %}
+            </a>
+            <a href="{% url 'main:doctors' %}" class="btn btn-outline-light btn-lg">
+                <i class="fas fa-user-md me-2"></i>{% trans "Browse Doctors" %}
+            </a>
+        </div>
+    </section>
+</div>
+{% endblock %}
+
+{% block extra_head %}
+<style>
+.testimonial-card {
+    transition: all 0.3s ease;
+    border-left: 4px solid var(--primary-color);
+}
+
+.testimonial-card:nth-child(even) {
+    border-left-color: var(--secondary-color);
+}
+
+.testimonial-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+blockquote {
+    font-style: italic;
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+.rating i {
+    font-size: 1.2rem;
+}
+</style>
+{% endblock %}

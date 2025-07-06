@@ -1,0 +1,181 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}{% trans "About Us" %} - UberMed.Life{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Hero Section -->
+    <section class="text-center mb-5">
+        <h1 class="display-4 fw-bold text-primary mb-4">
+            {% trans "About UberMed.Life" %}
+        </h1>
+        <p class="lead text-muted mx-auto" style="max-width: 800px;">
+            {% trans "We are revolutionizing healthcare access by connecting Bangladeshi patients with world-class Chinese medical specialists and cutting-edge treatments." %}
+        </p>
+    </section>
+
+    <!-- Mission & Vision -->
+    <section class="row mb-5">
+        <div class="col-lg-6 mb-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <div class="text-center mb-3">
+                        <i class="fas fa-bullseye fa-3x text-primary mb-3"></i>
+                        <h3 class="fw-bold">{% trans "Our Mission" %}</h3>
+                    </div>
+                    <p class="text-muted">
+                        {% trans "To provide Bangladeshi patients with seamless access to world-class Chinese medical expertise, innovative treatments, and comprehensive healthcare solutions that may not be available locally." %}
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-6 mb-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <div class="text-center mb-3">
+                        <i class="fas fa-eye fa-3x text-primary mb-3"></i>
+                        <h3 class="fw-bold">{% trans "Our Vision" %}</h3>
+                    </div>
+                    <p class="text-muted">
+                        {% trans "To become the leading bridge between Bangladesh and China's healthcare systems, ensuring every patient has access to the best possible medical care regardless of geographical boundaries." %}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Story -->
+    <section class="mb-5">
+        <div class="row align-items-center">
+            <div class="col-lg-6 mb-4">
+                <h2 class="fw-bold mb-4">{% trans "Our Story" %}</h2>
+                <p class="text-muted mb-3">
+                    {% trans "UberMed.Life was founded with a simple yet powerful vision: to break down geographical barriers to quality healthcare. Recognizing that many Bangladeshi patients needed specialized treatments not readily available locally, we established partnerships with China's most prestigious hospitals and medical specialists." %}
+                </p>
+                <p class="text-muted mb-3">
+                    {% trans "Our platform combines the convenience of modern telemedicine with the expertise of Chinese medical professionals, offering everything from virtual consultations to comprehensive medical tourism packages." %}
+                </p>
+                <p class="text-muted">
+                    {% trans "Based in Dhaka, Bangladesh, we serve as your trusted healthcare partner, providing personalized support throughout your medical journey - from initial consultation to post-treatment care." %}
+                </p>
+            </div>            <div class="col-lg-6 text-center">
+                <div class="img-placeholder" style="height: 400px;">
+                    <i class="fas fa-hospital-user fa-4x"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Key Features -->
+    <section class="mb-5">
+        <h2 class="text-center fw-bold mb-5">{% trans "Why Choose UberMed.Life" %}</h2>
+        
+        <div class="row g-4">
+            <div class="col-lg-4 col-md-6">
+                <div class="feature-box text-center p-4">                    <div class="feature-icon bg-orange text-white rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                        <i class="fas fa-user-md fa-2x"></i>
+                    </div>
+                    <h5 class="fw-bold mb-3">{% trans "Expert Chinese Doctors" %}</h5>
+                    <p class="text-muted">
+                        {% trans "Access to over 1000+ Chinese medical specialists from top hospitals across China, each with extensive experience and international recognition." %}
+                    </p>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6">
+                <div class="feature-box text-center p-4">                    <div class="feature-icon bg-primary text-white rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                        <i class="fas fa-language fa-2x"></i>
+                    </div>
+                    <h5 class="fw-bold mb-3">{% trans "Language Support" %}</h5>
+                    <p class="text-muted">
+                        {% trans "Full support in both Bangla and English, with professional medical translation services to ensure clear communication with Chinese specialists." %}
+                    </p>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6">
+                <div class="feature-box text-center p-4">                    <div class="feature-icon bg-orange text-white rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                        <i class="fas fa-shield-alt fa-2x"></i>
+                    </div>
+                    <h5 class="fw-bold mb-3">{% trans "Comprehensive Support" %}</h5>
+                    <p class="text-muted">
+                        {% trans "End-to-end assistance including visa support, accommodation arrangements, medical translation, and post-treatment follow-up care." %}
+                    </p>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6">
+                <div class="feature-box text-center p-4">                    <div class="feature-icon bg-primary text-white rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                        <i class="fas fa-clock fa-2x"></i>
+                    </div>
+                    <h5 class="fw-bold mb-3">{% trans "24/7 Support" %}</h5>
+                    <p class="text-muted">
+                        {% trans "Round-the-clock support from our dedicated care coordinators to assist you at every step of your healthcare journey." %}
+                    </p>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6">
+                <div class="feature-box text-center p-4">                    <div class="feature-icon bg-orange text-white rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                        <i class="fas fa-money-bill-wave fa-2x"></i>
+                    </div>
+                    <h5 class="fw-bold mb-3">{% trans "Cost-Effective" %}</h5>
+                    <p class="text-muted">
+                        {% trans "Affordable healthcare solutions with transparent pricing. Many treatments in China cost significantly less than similar procedures in Western countries." %}
+                    </p>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6">
+                <div class="feature-box text-center p-4">                    <div class="feature-icon bg-primary text-white rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                        <i class="fas fa-certificate fa-2x"></i>
+                    </div>
+                    <h5 class="fw-bold mb-3">{% trans "Quality Assurance" %}</h5>
+                    <p class="text-muted">
+                        {% trans "All partner hospitals and doctors are carefully vetted and accredited. We maintain the highest standards of medical care and patient safety." %}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Information -->
+    <section class="bg-light p-5 rounded-lg">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <h3 class="fw-bold mb-3">{% trans "Ready to Start Your Healthcare Journey?" %}</h3>
+                <p class="text-muted mb-0">
+                    {% trans "Contact us today to learn more about how UberMed.Life can help you access world-class Chinese medical care." %}
+                </p>
+            </div>
+            <div class="col-lg-4 text-lg-end">                <a href="{% url 'main:contact' %}" class="btn btn-orange btn-lg me-3">
+                    {% trans "Contact Us" %}
+                </a>
+                <a href="{% url 'main:consultation_request' %}" class="btn btn-outline-primary btn-lg">
+                    {% trans "Book Consultation" %}
+                </a>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}
+
+{% block extra_head %}
+<style>
+.feature-box:hover {
+    transform: translateY(-5px);
+    transition: all 0.3s ease;
+}
+
+.feature-icon {
+    transition: all 0.3s ease;
+}
+
+.feature-box:hover .feature-icon {
+    transform: scale(1.1);
+}
+</style>
+{% endblock %}

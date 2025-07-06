@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}{% trans "Dashboard" %} - UberMed.Life{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-5">
+        <div>
+            <h1 class="fw-bold text-primary">{% trans "Dashboard" %}</h1>
+            <p class="text-muted">{% trans "Welcome back," %} {{ user.first_name|default:user.username }}!</p>
+        </div>
+        <div>
+            <a href="{% url 'main:consultation_request' %}" class="btn btn-primary">
+                <i class="fas fa-plus me-2"></i>{% trans "New Consultation" %}
+            </a>
+        </div>
+    </div>
+
+    <!-- Quick Stats -->
+    <div class="row g-4 mb-5">
+        <div class="col-lg-3 col-md-6">
+            <div class="card border-0 shadow-sm card-blue">
+                <div class="card-body text-center">
+                    <i class="fas fa-video fa-2x text-primary mb-3"></i>
+                    <h3 class="fw-bold text-primary">{{ consultation_count }}</h3>
+                    <p class="text-muted mb-0">{% trans "Total Consultations" %}</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-3 col-md-6">
+            <div class="card border-0 shadow-sm card-orange">
+                <div class="card-body text-center">
+                    <i class="fas fa-plane fa-2x text-orange mb-3"></i>
+                    <h3 class="fw-bold text-orange">{{ travel_plan_count }}</h3>
+                    <p class="text-muted mb-0">{% trans "Travel Plans" %}</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-3 col-md-6">
+            <div class="card border-0 shadow-sm card-blue">
+                <div class="card-body text-center">
+                    <i class="fas fa-user-md fa-2x text-primary mb-3"></i>
+                    <h3 class="fw-bold text-primary">{{ doctor_count }}</h3>
+                    <p class="text-muted mb-0">{% trans "Doctors Consulted" %}</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-3 col-md-6">
+            <div class="card border-0 shadow-sm card-orange">
+                <div class="card-body text-center">
+                    <i class="fas fa-calendar fa-2x text-orange mb-3"></i>
+                    <h3 class="fw-bold text-orange">{{ upcoming_count }}</h3>
+                    <p class="text-muted mb-0">{% trans "Upcoming Appointments" %}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Recent Consultations -->
+        <div class="col-lg-8 mb-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center">
+                    <h5 class="fw-bold mb-0">{% trans "Recent Consultations" %}</h5>
+                    <a href="{% url 'main:my_consultations' %}" class="btn btn-outline-primary btn-sm">
+                        {% trans "View All" %}
+                    </a>
+                </div>
+                <div class="card-body">
+                    {% if recent_consultations %}
+                        {% for consultation in recent_consultations %}
+                        <div class="d-flex align-items-center p-3 border rounded mb-3">
+                            {% if consultation.doctor.photo %}
+                                <img src="{{ consultation.doctor.photo.url }}" alt="Dr. {{ consultation.doctor.name }}" 
+                                     class="rounded-circle me-3" style="width: 50px; height: 50px; object-fit: cover;">
+                            {% else %}
+                                <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px;">
+                                    <i class="fas fa-user-md"></i>
+                                </div>
+                            {% endif %}
+                            <div class="flex-grow-1">
+                                <h6 class="mb-1">Dr. {{ consultation.doctor.name }}</h6>
+                                <small class="text-muted">{{ consultation.doctor.get_specialization_display }}</small>
+                                <div class="mt-1">
+                                    <span class="badge {% if consultation.status == 'completed' %}bg-success{% elif consultation.status == 'scheduled' %}bg-primary{% else %}bg-warning{% endif %}">
+                                        {{ consultation.get_status_display }}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="text-end">
+                                <small class="text-muted">{{ consultation.requested_date|date:"M d, Y" }}</small>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="text-center py-4">
+                            <i class="fas fa-stethoscope fa-3x text-muted mb-3"></i>
+                            <h6 class="text-muted">{% trans "No consultations yet" %}</h6>
+                            <p class="text-muted small">{% trans "Book your first consultation with our Chinese specialists" %}</p>
+                            <a href="{% url 'main:consultation_request' %}" class="btn btn-primary">
+                                {% trans "Book Now" %}
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="col-lg-4">
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-gradient-primary text-white">
+                    <h5 class="fw-bold mb-0">{% trans "Quick Actions" %}</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'main:consultation_request' %}" class="btn btn-outline-primary">
+                            <i class="fas fa-video me-2"></i>{% trans "New Consultation" %}
+                        </a>
+                        <a href="{% url 'main:travel_plan_request' %}" class="btn btn-outline-orange">
+                            <i class="fas fa-plane me-2"></i>{% trans "Plan Medical Travel" %}
+                        </a>
+                        <a href="{% url 'main:doctors' %}" class="btn btn-outline-primary">
+                            <i class="fas fa-user-md me-2"></i>{% trans "Browse Doctors" %}
+                        </a>
+                        <a href="{% url 'accounts:profile' %}" class="btn btn-outline-secondary">
+                            <i class="fas fa-user-edit me-2"></i>{% trans "Update Profile" %}
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Support -->
+            <div class="card border-0 shadow-sm">
+                <div class="card-body text-center">
+                    <i class="fas fa-headset fa-3x text-orange mb-3"></i>
+                    <h6 class="fw-bold mb-2">{% trans "Need Help?" %}</h6>
+                    <p class="text-muted small mb-3">
+                        {% trans "Our care coordinators are available 24/7 to assist you." %}
+                    </p>
+                    <a href="{% url 'main:contact' %}" class="btn btn-orange btn-sm">
+                        {% trans "Contact Support" %}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

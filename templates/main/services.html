@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}{% trans "Our Services" %} - UberMed.Life{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Header -->
+    <section class="text-center mb-5">
+        <h1 class="display-4 fw-bold text-primary mb-4">
+            {% trans "Our Medical Services" %}
+        </h1>
+        <p class="lead text-muted mx-auto" style="max-width: 800px;">
+            {% trans "Comprehensive healthcare solutions connecting you with Chinese medical expertise" %}
+        </p>
+    </section>
+
+    <!-- Services Grid -->
+    <div class="row g-4">
+        {% for service in services %}
+        <div class="col-lg-6 col-md-6">
+            <div class="card service-card h-100 border-0 shadow-sm {% cycle 'card-blue' 'card-orange' %}">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-start mb-3">
+                        <div class="service-icon-placeholder me-3">
+                            {% if service.service_type == 'consultation' %}
+                                <i class="fas fa-video"></i>
+                            {% elif service.service_type == 'second_opinion' %}
+                                <i class="fas fa-user-md"></i>
+                            {% elif service.service_type == 'travel' %}
+                                <i class="fas fa-plane"></i>
+                            {% elif service.service_type == 'surgery' %}
+                                <i class="fas fa-procedures"></i>
+                            {% elif service.service_type == 'diagnostics' %}
+                                <i class="fas fa-x-ray"></i>
+                            {% elif service.service_type == 'medication' %}
+                                <i class="fas fa-pills"></i>
+                            {% else %}
+                                <i class="fas fa-stethoscope"></i>
+                            {% endif %}
+                        </div>
+                        <div class="flex-grow-1">
+                            <h4 class="fw-bold mb-2">
+                                {% get_current_language as LANGUAGE_CODE %}
+                                {% if LANGUAGE_CODE == 'bn' and service.name_bangla %}
+                                    {{ service.name_bangla }}
+                                {% else %}
+                                    {{ service.name }}
+                                {% endif %}
+                            </h4>
+                            <span class="badge badge-orange mb-3">{{ service.get_service_type_display }}</span>
+                        </div>
+                    </div>
+                    
+                    <p class="text-muted mb-3">
+                        {% if LANGUAGE_CODE == 'bn' and service.description_bangla %}
+                            {{ service.description_bangla }}
+                        {% else %}
+                            {{ service.description }}
+                        {% endif %}
+                    </p>
+                    
+                    <div class="service-details mb-3">
+                        {% if service.price_range %}
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">{% trans "Price Range:" %}</span>
+                            <span class="fw-bold text-primary">{{ service.price_range }}</span>
+                        </div>
+                        {% endif %}
+                        
+                        {% if service.duration %}
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">{% trans "Duration:" %}</span>
+                            <span class="text-dark">{{ service.duration }}</span>
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="d-flex gap-2">
+                        <a href="{% url 'main:consultation_request' %}" class="btn btn-primary btn-sm flex-grow-1">
+                            <i class="fas fa-calendar-plus me-1"></i>{% trans "Book Now" %}
+                        </a>
+                        <a href="{% url 'main:contact' %}" class="btn btn-outline-orange btn-sm">
+                            <i class="fas fa-info-circle me-1"></i>{% trans "Learn More" %}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Call to Action -->
+    <section class="text-center mt-5 py-5 bg-light rounded-lg">
+        <h3 class="fw-bold mb-3">{% trans "Need Help Choosing the Right Service?" %}</h3>
+        <p class="text-muted mb-4">
+            {% trans "Our care coordinators are here to help you find the best medical solution for your needs." %}
+        </p>
+        <div class="d-flex flex-wrap gap-3 justify-content-center">
+            <a href="{% url 'main:contact' %}" class="btn btn-orange btn-lg">
+                <i class="fas fa-phone me-2"></i>{% trans "Speak with Our Team" %}
+            </a>
+            <a href="{% url 'main:doctors' %}" class="btn btn-outline-primary btn-lg">
+                <i class="fas fa-users me-2"></i>{% trans "Browse Doctors" %}
+            </a>
+        </div>
+    </section>
+</div>
+{% endblock %}
+
+{% block extra_head %}
+<style>
+.service-details {
+    background: #f8f9fa;
+    padding: 1rem;
+    border-radius: 6px;
+    border-left: 3px solid var(--primary-color);
+}
+
+.service-card.card-orange .service-details {
+    border-left-color: var(--secondary-color);
+}
+
+.service-card:hover {
+    transform: translateY(-3px);
+    transition: all 0.3s ease;
+}
+</style>
+{% endblock %}
